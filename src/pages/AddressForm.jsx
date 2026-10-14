@@ -72,7 +72,7 @@ if (!data.success) return toast.error("Something went wrong")
 console.log("Razorpay data:", data);
 
 const options = {
-  key: `rzp_test_Tnh3hQjGVG4CF5`,
+  key: import.meta.env.VITE_REZORPAY_KEY_ID,
   amount: data.order.amount,
   currency: data.order.currency,
   order_id: data.order.id, // Order ID from backend
