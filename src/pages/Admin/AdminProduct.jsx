@@ -97,6 +97,7 @@ if (sortOrder === "highToLow") {
     formData.append("productPrice", editProduct.productPrice)
     formData.append("category", editProduct.category)
     formData.append("brand", editProduct.brand)
+    
 
     // Add existing images public_ids
     const existingImages = editProduct.productImg

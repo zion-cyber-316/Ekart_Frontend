@@ -16,7 +16,7 @@ const Cart = () => {
    const navigate = useNavigate()
   console.log(cart)
 
-  const subtotal = cart?.totalPrice;
+  const subtotal = Number(cart?.totalPrice) || 0;
   const shipping = subtotal > 299 ? 0 : 10;
   const tax = subtotal * 0.05; // 5%
   const total = subtotal + shipping + tax;
@@ -43,14 +43,36 @@ const Cart = () => {
 };
 
 
-const handleRemove = async(productId)=>{
-    try {
-    const res = await axios.delete(`${import.meta.env.VITE_URL}/api/cart/delete`,
+// const handleRemove = async(productId)=>{
+//     try {
+//     const res = await axios.delete(`${import.meta.env.VITE_URL}/api/cart/delete`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//          data :{productId}
+//       }
+//     );
+
+//     if (res.data.success) {
+//       dispatch(setCart(res.data.cart));
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+
+// }
+
+
+const handleRemove = async (productId) => {
+  try {
+    const res = await axios.delete(
+      `${serverUrl}/api/cart/delete`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-         data :{productId}
+        data: { productId },
       }
     );
 
@@ -58,11 +80,12 @@ const handleRemove = async(productId)=>{
       dispatch(setCart(res.data.cart));
     }
   } catch (error) {
-    console.log(error);
+    console.error(
+      "Remove cart item error:",
+      error.response?.data || error.message
+    );
   }
-
-}
-
+};
 
   return (
 

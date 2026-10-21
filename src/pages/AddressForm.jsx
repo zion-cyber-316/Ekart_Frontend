@@ -81,9 +81,11 @@ const options = {
 
   handler: async function (response) {
     try {
+      console.log(accessToken)
       const verifyRes = await axios.post(`${import.meta.env.VITE_URL}/api/order/verify-payment`,
       response, {
         headers: { Authorization: `Bearer ${accessToken}` }
+
       })
 
       if (verifyRes.data.success) {
@@ -105,6 +107,7 @@ const options = {
 modal: {
   ondismiss: async function () {
     // Handle user closing the popup
+    console.log(accessToken)
     await axios.post(`${import.meta.env.VITE_URL}/api/order/verify-payment`, {
       razorpay_order_id: data.order.id,
       paymentFailed: true

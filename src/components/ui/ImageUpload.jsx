@@ -6,6 +6,7 @@ import { Card, CardContent } from './card'
 import { X } from "lucide-react";
 
 const ImageUpload = ({productData ,setProductData}) => {
+  const serverUrl = `${import.meta.env.VITE_URL}`;
 
     const handleFiles = (e) => {
     const files = Array.from(e.target.files || []);
@@ -58,9 +59,9 @@ return (
       if (file instanceof File) {
         preview = URL.createObjectURL(file);
       } else if (typeof file === "string") {
-        preview = file;
-      } else if (file?.url) {
-        preview = file.url;
+        preview = `${serverUrl}${file}`;
+      } else if (`${serverUrl}${(file?.url)}`) {
+        preview = (`${serverUrl}${file.url}`);
       } else {
         return null;
       }
