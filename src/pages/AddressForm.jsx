@@ -7,9 +7,9 @@ import { Separator } from '@/components/ui/separator'
 import { addAddress, deleteAddress, setCart, setSelectedAddress } from '@/redux/productSlice'
 import axios from 'axios'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 
@@ -27,8 +27,10 @@ const AddressForm = () => {
   })
   const dispatch = useDispatch()
   const nevigate = useNavigate()
+    const params = useParams()
 
   const {cart, addresses, selectedAddress } = useSelector((state) => state.product)
+   
 
   const [showForm, setShowForm] = useState(
     addresses?.length > 0 ? false : true
@@ -45,6 +47,10 @@ const AddressForm = () => {
     dispatch(addAddress(formData))
     setShowForm(false)
   }
+
+
+
+  /// payment
 
   const subtotal = cart.totalPrice
 const shipping = subtotal > 50 ? 0 : 10

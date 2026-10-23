@@ -2,10 +2,11 @@
 import { setUser } from '@/redux/userSlice'
 import axios from 'axios'
 import { ShoppingCart, Menu, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { clearCart, setCart } from '@/redux/productSlice'
 
 const Navbar = () => {
 
@@ -20,33 +21,82 @@ const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const logout = async () => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_URL}/api/auth/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accesToken}`
-          }
-        }
-      )
+ 
 
-      if (res.data.success) {
-        localStorage.removeItem("accessToken")
-        navigate("/")
-        dispatch(setUser(null))
-        setMenuOpen(false)
+  
+
+
+const logout = async () => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_URL}/api/auth/logout`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accesToken}`,
+        },
       }
+    );
 
-    } catch (error) {
-      console.log(error)
+    if (res.data.success) {
+      // Clear token
+      localStorage.removeItem("accessToken");
+
+      // Clear Redux cart
+      dispatch(clearCart());
+
+      // Clear Redux user
+      dispatch(setUser(null));
+
+      // Close menu
+      setMenuOpen(false);
+
+      // Redirect to home
+      navigate("/");
     }
+  } catch (error) {
+    console.log(error);
   }
+};
+
 
   const closeMenu = () => {
     setMenuOpen(false)
   }
+
+
+
+
+    // get cart 
+   const getCart = async () => {
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_URL}/api/cart/list`,
+      {
+        headers: {
+          Authorization: `Bearer ${accesToken}`,
+        },
+      }
+    );
+ console.log(res.data)
+    if (res.data.success) {
+      dispatch(setCart(res.data.cart));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+  
+    useEffect(()=>{
+     getCart()
+  
+    },[])
+
+
 
   return (
     <header className='bg-pink-50 fixed w-full z-20 border-b border-pink-200'>

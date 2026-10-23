@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import userLogo  from "../../assets/user.png"
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,10 +10,14 @@ import { setCart } from '@/redux/productSlice'
 import axios from 'axios'
 
 const Cart = () => {
+
+   const {user} = useSelector((store) => store.user)
   const {cart} = useSelector((store)=>store.product)
    const serverUrl = `${import.meta.env.VITE_URL}`;
+    const accesToken = localStorage.getItem('accessToken')
 
    const navigate = useNavigate()
+  //  const userId = user._id
   console.log(cart)
 
   const subtotal = Number(cart?.totalPrice) || 0;
@@ -23,6 +27,13 @@ const Cart = () => {
   const dispatch = useDispatch()
 
   const accessToken = localStorage.getItem("accessToken")
+
+
+
+
+
+
+  // update cart 
 
   const handleUpdateQuantity = async (productId, type) => {
   try {
@@ -43,26 +54,8 @@ const Cart = () => {
 };
 
 
-// const handleRemove = async(productId)=>{
-//     try {
-//     const res = await axios.delete(`${import.meta.env.VITE_URL}/api/cart/delete`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//         },
-//          data :{productId}
-//       }
-//     );
 
-//     if (res.data.success) {
-//       dispatch(setCart(res.data.cart));
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-
-// }
-
+// remove cart
 
 const handleRemove = async (productId) => {
   try {
@@ -86,6 +79,10 @@ const handleRemove = async (productId) => {
     );
   }
 };
+
+
+
+
 
   return (
 
